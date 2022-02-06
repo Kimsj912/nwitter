@@ -1,10 +1,9 @@
-import React, { useState } from "react";
-import {HashRouter as Router , Route, Switch} from "react-router-dom";
-import Auth from "../routes/Auth";
+import React from "react";
+import {HashRouter as Router , Route, Switch} from "react-router-dom"; // export만으로 선언된 경우 import시 {}를 써서 가져와야한다.
+import Auth from "../routes/Auth"; // export default로 선언된 경우 import할 떄 {}중괄호 없이 가져와도 됨.
 import Home from "../routes/Home";
 
-const  AppRouter= () => {
-    const [isLoggedIn,setIsLoggedIn] = useState(false);
+const  AppRouter= ({isLoggedIn}) => {
     return (
         <Router>
             <Switch>
