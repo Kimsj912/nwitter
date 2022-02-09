@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {authService, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "fBase";
+import {authService, GithubAuthProvider, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword} from "fBase";
 
 const Auth = () => {
     // Variables with hooks
@@ -29,6 +29,14 @@ const Auth = () => {
 
     const toggleAccount = () => setNewAccount((prev)=>!prev);
 
+    const onSocialClick = async (event) =>{
+        const {target : {name}} =event;
+        let provider = name==="google" ? new GoogleAuthProvider() : 
+        name==="github" ? new GithubAuthProvider(): undefined;
+        
+        const result = await signInWithPopup(authService,provider);
+        console.log(result);
+    }
     // Return doc
     return (
         <div>
@@ -47,8 +55,8 @@ const Auth = () => {
         </form>
         <span onClick={toggleAccount}>{newAccount ? ">> Sign In" : ">> Create Account"}</span>
         <div>
-            <button>Continue with Google</button>
-            <button>Continue with Github</button>
+            <button onClick={onSocialClick} name="google">Continue with Google</button>
+            <button onClick={onSocialClick} name="github">Continue with Github</button>
         </div>
     </div>
     );
