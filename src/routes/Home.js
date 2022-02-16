@@ -3,13 +3,14 @@ import React, { useEffect, useState } from "react";
 import Nweet from "components/Nweet";
 
 const Home = ({userObj}) => {
+    // States
     const [nweet, setNweet] = useState("");
     const [nweets, setNweets] = useState([]);
-    useEffect(()=>{
-        // getNweets();
-        const q = query(
+
+    useEffect(()=>{ // 뭔가를 지우거나 업데이트되거나 생성되거나 하면 실행됨.
+        const q = query( // 여러개의 함수를 묶어줌.
             collection(dbService, "nweets"),
-            orderBy("createdAt", "desc"),
+            orderBy("createdAt", "desc"), // 생성순으로 정렬
         );
         onSnapshot(q,(snapShot) =>{
             const nweetArr = snapShot.docs.map((doc)=>({
@@ -19,6 +20,7 @@ const Home = ({userObj}) => {
             setNweets(nweetArr);
         });
     }, []);
+    
     const getNweets = async (event) =>{
         const dbNweets = await getDocs(query(collection(dbService,"nweets")));
         dbNweets.forEach((doc) => {
@@ -31,7 +33,6 @@ const Home = ({userObj}) => {
     };
     const onSubmit = async function (event) {
         event.preventDefault();
-        ////////////////////////////////////////////// 여기 고치던중. 3.1의 4분 53초
         try{
             const docRef = await addDoc(
                 collection(dbService, "nweets"),

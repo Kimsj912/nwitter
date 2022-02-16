@@ -3,14 +3,15 @@ import React, { useState } from "react";
 
 
 const Nweet = ({nweetObj, isOwner})=>{
-    // STATES
+    // States
     const [editing, setEditing] = useState(false);
     const [newNweet, setNewNweet] = useState(nweetObj.text);
+
     // when delete button clicked
     const onDeleteClick = async () =>{
         const ok = window.confirm("Are you sure to delete your this nweet ?");
+        // ok버튼이 눌렸을때 (delte nweet)
         if(ok){
-            // ok버튼이 눌렸을때 (delte nweet)
             // doc으로 레퍼런스를 만들고 이를 deleteDoc으로 삭제하는 방식이다.
             const docRef = await doc(dbService, `nweets/${nweetObj.id}`);
             deleteDoc(docRef);
@@ -38,11 +39,16 @@ const Nweet = ({nweetObj, isOwner})=>{
                 editing ? 
                 ( 
                 <>
-                    <form onSubmit={onSubmit}>
-                        <input type="text" placeholder="Edit your nweet" value={newNweet} required onChange={onChange} />
-                        <input type="submit" value="update Nweet"></input>
-                    </form>
-                    <button onClick={toggleEditing}>Cancel</button>
+                    {/* 계정 소유주가 아니면 에딧창자체를 못키게함. */}
+                    {isOwner && (
+                        <>
+                            <form onSubmit={onSubmit}>
+                                <input type="text" placeholder="Edit your nweet" value={newNweet} required onChange={onChange} />
+                                <input type="submit" value="update Nweet"></input>
+                            </form>
+                            <button onClick={toggleEditing}>Cancel</button>
+                        </>
+                    )}
                 </>
                 ) : (
                 <>
