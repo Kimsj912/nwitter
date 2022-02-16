@@ -1,11 +1,22 @@
-import { dbService, addDoc, getDocs, setDoc, collection,query} from "fBase";
+import { dbService, addDoc, getDocs, collection,query,orderBy, onSnapshot} from "fBase";
 import React, { useEffect, useState } from "react";
 
-const Home = () => {
+const Home = ({userObj}) => {
     const [nweet, setNweet] = useState("");
     const [nweets, setNweets] = useState([]);
     useEffect(()=>{
-        getNweets();
+        // getNweets();
+        const q = query(
+            collection(dbService, "nweets"),
+            orderBy("createdAt", "desc"),
+        );
+        onSnapshot(q,(snapShot) =>{
+            const nweetArr = snapShot.docs.map((doc)=>({
+                id:doc.id,
+                ...doc.data(),
+            }));
+            setNweets(nweetArr);
+        });
     }, []);
     const getNweets = async (event) =>{
         const dbNweets = await getDocs(query(collection(dbService,"nweets")));
@@ -24,15 +35,15 @@ const Home = () => {
             const docRef = await addDoc(
                 collection(dbService, "nweets"),
                 {
-                    nweet,
+                    text: nweet,
                     createdAt : Date.now(),
+                    creatorId : userObj.uid,
                 }
             );
-            console.log("Doc ID : ", docRef.id);
+            setNweet(docRef);
         } catch(error){
             console.log("Error adding Document : ", error);
         }
-        setNweet("");
     };
     const onChange=(event)=>{
         const {
@@ -49,7 +60,7 @@ const Home = () => {
             <div>
                 {nweets.map(nweet => 
                     <div id={nweet.id}>
-                        <h4>{nweet.nweet}</h4>
+                        <h4>{nweet.text} </h4><small>[{new Date().toDateString(nweet.createdAt)}]</small>
                     </div>)}
             </div>
         </div>
