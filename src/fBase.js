@@ -2,7 +2,7 @@
 // import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
 import { initializeApp }  from 'firebase/app';
 import {getAuth, GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth";
-import {getFirestore, addDoc, getDocs, setDoc, collection, query, orderBy, onSnapshot} from  'firebase/firestore';
+import {getFirestore, addDoc, getDocs, setDoc, collection, query, orderBy, onSnapshot,doc,deleteDoc,updateDoc} from  'firebase/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -17,6 +17,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const authService = getAuth();
-export {authService, GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword,createUserWithEmailAndPassword};
 export const dbService = getFirestore();
+export {authService, GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword,createUserWithEmailAndPassword};
 export {collection, addDoc, getDocs, setDoc, query, orderBy, onSnapshot};
+export {doc,deleteDoc,updateDoc};

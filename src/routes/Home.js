@@ -1,5 +1,6 @@
 import { dbService, addDoc, getDocs, collection,query,orderBy, onSnapshot} from "fBase";
 import React, { useEffect, useState } from "react";
+import Nweet from "components/Nweet";
 
 const Home = ({userObj}) => {
     const [nweet, setNweet] = useState("");
@@ -40,7 +41,7 @@ const Home = ({userObj}) => {
                     creatorId : userObj.uid,
                 }
             );
-            setNweet(docRef);
+            setNweet("");
         } catch(error){
             console.log("Error adding Document : ", error);
         }
@@ -59,9 +60,8 @@ const Home = ({userObj}) => {
             </form>
             <div>
                 {nweets.map(nweet => 
-                    <div id={nweet.id}>
-                        <h4>{nweet.text} </h4><small>[{new Date().toDateString(nweet.createdAt)}]</small>
-                    </div>)}
+                    <Nweet key={nweet.id} nweetObj={nweet} isOwner={nweet.creatorId===userObj.uid}/>
+                )}
             </div>
         </div>
     );
